@@ -74,6 +74,8 @@ public class Main {
         app.post("/trainers", tc.insertTrainersHandler);
         app.patch("/trainers/{id}", tc.changeRegionHandler);
         app.get("/owned", oc.getAllOwnedPokemonHandler);
+        app.post("/owned", oc.insertByName);
+        app.get("/owned/catch", oc.catchRandom);
 
     }
 }

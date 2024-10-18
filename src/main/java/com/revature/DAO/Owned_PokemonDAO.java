@@ -80,6 +80,35 @@ public class Owned_PokemonDAO {
         return null;
 
     }
+    public Owned_pokemon catchNamePokemon(String name) {
+        try (Connection conn = ConnectionUtil.getConnection()) {
+            String sql = "INSERT INTO owned_pokemon (trainer_id_fk, level, poke_fk_id) VALUES (?, ?, ?)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            int randlevel = (int)(Math.random() * 100) + 1;
+            int randpokemon = (int)(Math.random() * 809) + 1;
+
+            PokeDexDAO pDAO = new PokeDexDAO();
+            TrainerDAO tDAO = new TrainerDAO();
+
+
+            Owned_pokemon newMon = new Owned_pokemon(randlevel,pDAO.getByID(randpokemon), tDAO.getTrainerByName(name));
+
+            ps.setInt(1, newMon.getTrainer_id_fk());
+            ps.setInt(2, newMon.getLevel());
+            ps.setInt(3, newMon.getPoke_fk_id());
+
+            ps.executeUpdate();
+
+            return newMon;
+        } catch(SQLException e) {
+            e.printStackTrace();
+            System.out.println("could not catch pokemon");
+
+        }
+        return null;
+
+    }
     public Owned_pokemon releasePokemon(int owned_id) {
         try (Connection conn = ConnectionUtil.getConnection()) {
             String sql = "DELETE INTO owned_pokemon WHERE owned_id = ?";
