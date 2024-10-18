@@ -14,6 +14,12 @@ public class Pokedex {
         this.poke_type2 = poke_type2;
     }
 
+    public Pokedex(int poke_no, String poke_name, String poke_type1) {
+        this.poke_no = poke_no;
+        this.poke_name = poke_name;
+        this.poke_type1 = poke_type1;
+    }
+
     public int getPoke_no() {
         return poke_no;
     }
@@ -48,12 +54,22 @@ public class Pokedex {
 
     @Override
     public String toString() {
-        return "pokedex{" +
-                "poke_no=" + poke_no +
-                ", poke_name='" + poke_name + '\'' +
-                ", poke_type1='" + poke_type1 + '\'' +
-                ", poke_type2='" + poke_type2 + '\'' +
-                '}';
+        if(poke_type2 == null) {
+            return "pokedex{" +
+                    "poke_no=" + poke_no +
+                    ", poke_name='" + poke_name + '\'' +
+                    ", poke_type1='" + poke_type1 + '\'' +'}';
+        }
+        else {
+            return "pokedex{" +
+                    "poke_no=" + poke_no +
+                    ", poke_name='" + poke_name + '\'' +
+                    ", poke_type1='" + poke_type1 + '\'' +
+                    ", poke_type2='" + poke_type2 + '\'' +
+                    '}';
+        }
+
+
     }
 }
 

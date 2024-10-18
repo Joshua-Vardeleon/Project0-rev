@@ -5,7 +5,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.revature.DAO.PokeDexDAO;
 import com.revature.DAO.TrainerDAO;
+import com.revature.models.Pokedex;
 import com.revature.models.Trainer;
 import com.revature.utils.ConnectionUtil;
 
@@ -20,13 +22,20 @@ public class Main {
             System.out.println("AHHHHHHHHHHHHHH CANT CONNECT AHHHHHH");
         }
 
-        TrainerDAO tDAO = new TrainerDAO();
-        tDAO.changeRegionbyID(5, "Hoenn");
+//        TrainerDAO tDAO = new TrainerDAO();
+//        tDAO.changeRegionbyID(5, "Hoenn");
 //        Trainer dawn = new Trainer("Ash Ketchum", "Kanto");
 //        tDAO.insertTrainer(dawn);
-        ArrayList<Trainer> allTrainers = tDAO.getAllTrainers();
-        for(Trainer currTrainer : allTrainers) {
-            System.out.println(currTrainer.getTrainer_name() + " from " + currTrainer.getRegion());
+//        ArrayList<Trainer> allTrainers = tDAO.getAllTrainers();
+//        for(Trainer currTrainer : allTrainers) {
+//            System.out.println(currTrainer.getTrainer_name() + " from " + currTrainer.getRegion());
+//        }
+
+        PokeDexDAO dexDAO = new PokeDexDAO();
+        ArrayList<Pokedex> search = dexDAO.getByType("Water","Bug");
+        for(Pokedex curr : search) {
+            System.out.println(curr);
         }
+
     }
 }
