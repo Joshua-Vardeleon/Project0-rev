@@ -5,7 +5,6 @@ import com.revature.utils.ConnectionUtil;
 import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
-
 /*
 TODO
 - get trainer by id
@@ -47,7 +46,7 @@ public class TrainerDAO {
                         rs.getInt("user_id"),
                         rs.getString("trainer_name"),
                         rs.getString("region"));
-
+                currTrainer.setUser_id(id);
                 return currTrainer;
             }
         } catch (SQLException e) {

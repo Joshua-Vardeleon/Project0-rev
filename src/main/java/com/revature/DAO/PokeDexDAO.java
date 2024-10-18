@@ -11,6 +11,51 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PokeDexDAO {
+    public Pokedex getByID(int id){
+        try(Connection conn = ConnectionUtil.getConnection()) {
+            String sql = "SELECT * FROM pokedex WHERE poke_no = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+            {
+                Pokedex currPoke = new Pokedex(
+                        rs.getInt("poke_no"),
+                        rs.getString("pokemon_name"),
+                        rs.getString("pokemon_type1"),
+                        rs.getString("pokemon_type2"));
+                return currPoke;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("could not get pokemon by id");
+        }
+        return null;
+    }
+    public Pokedex getByName(String name){
+        try(Connection conn = ConnectionUtil.getConnection()) {
+            String sql = "SELECT * FROM pokedex WHERE pokemon_name = ?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+            {
+                Pokedex currPoke = new Pokedex(
+                        rs.getInt("poke_no"),
+                        rs.getString("pokemon_name"),
+                        rs.getString("pokemon_type1"),
+                        rs.getString("pokemon_type2"));
+                return currPoke;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("could not get pokemon by id");
+        }
+        return null;
+    }
+
     public ArrayList<Pokedex> getByTypeMono(String type) {
         try (Connection conn = ConnectionUtil.getConnection()) {
             String sql = "SELECT * FROM pokedex WHERE pokemon_type1 = ?";
