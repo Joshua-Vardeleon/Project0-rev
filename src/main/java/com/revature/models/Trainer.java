@@ -10,6 +10,10 @@ public class Trainer {
         this.trainer_name = trainer_name;
         this.region = region;
     }
+    public Trainer(String trainer_name, String region) {
+        this.trainer_name = trainer_name;
+        this.region = region;
+    }
 
     public int getUser_id() {
         return user_id;

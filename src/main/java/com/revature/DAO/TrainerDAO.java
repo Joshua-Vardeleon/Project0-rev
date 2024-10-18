@@ -16,10 +16,18 @@ public class TrainerDAO {
 
     public Trainer insertTrainer(Trainer trainer) {
         try (Connection conn = ConnectionUtil.getConnection()) {
-            String sql = "INSERT INTO trainer (user_id, trainer_name , region) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO trainer (trainer_name , region) VALUES (?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, trainer.getTrainer_name());
+            ps.setString(2, trainer.getRegion());
+
+            ps.executeUpdate();
+
             return trainer;
         } catch(SQLException e) {
+            e.printStackTrace();
+            System.out.println("could not insert");
 
         }
         return null;
@@ -46,6 +54,23 @@ public class TrainerDAO {
             System.out.println("Couldnt connect to database");
         }
         return null;
+    }
+    public int changeRegionbyID(int userID, String changeRegion){
+        try(Connection conn = ConnectionUtil.getConnection()) {
+            String sql = "UPDATE trainer SET  region = ? Where user_id = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, changeRegion);
+            ps.setInt(2,userID);
+
+            ps.executeUpdate();
+
+            return userID;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("error in trying to update user's region");
+        }
+        return 0;
     }
     public Trainer getTrainerByName(String name) {
         try (Connection conn = ConnectionUtil.getConnection()) {

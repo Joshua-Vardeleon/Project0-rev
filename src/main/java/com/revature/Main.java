@@ -21,10 +21,12 @@ public class Main {
         }
 
         TrainerDAO tDAO = new TrainerDAO();
-
-//        ArrayList<Trainer> allTrainers = tDAO.getTrainerByRegion("Kanto");
-//        for(Trainer currTrainer : allTrainers) {
-//            System.out.println(currTrainer.getTrainer_name() + " from " + currTrainer.getRegion());
-//        }
+        tDAO.changeRegionbyID(5, "Hoenn");
+//        Trainer dawn = new Trainer("Ash Ketchum", "Kanto");
+//        tDAO.insertTrainer(dawn);
+        ArrayList<Trainer> allTrainers = tDAO.getAllTrainers();
+        for(Trainer currTrainer : allTrainers) {
+            System.out.println(currTrainer.getTrainer_name() + " from " + currTrainer.getRegion());
+        }
     }
 }
