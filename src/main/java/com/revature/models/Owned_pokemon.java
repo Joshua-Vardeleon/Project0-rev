@@ -1,5 +1,8 @@
 package com.revature.models;
 
+import com.revature.DAO.PokeDexDAO;
+import com.revature.DAO.TrainerDAO;
+
 public class Owned_pokemon {
     private int level;
 
@@ -10,7 +13,11 @@ public class Owned_pokemon {
     private String trainer_name;
     private int trainer_id_fk;
     private String name;
+    private int id;
 
+    public Owned_pokemon() {
+
+    }
     public Owned_pokemon(int level, Pokedex pokedex, Trainer trainer) {
         this.level = level;
         this.pokedex = pokedex;
@@ -24,6 +31,42 @@ public class Owned_pokemon {
         this.level = level;
         this.poke_fk_id = poke_fk_id;
         this.trainer_id_fk = trainer_id_fk;
+        TrainerDAO tDAO = new TrainerDAO();
+        PokeDexDAO pDAO = new PokeDexDAO();
+        pokedex = pDAO.getByID(poke_fk_id);
+        name = pDAO.getByID(poke_fk_id).getPoke_name();
+        trainer_name = tDAO.getTrainerByID(trainer_id_fk).getTrainer_name();
+    }
+    public Owned_pokemon(int level, int poke_fk_id, int trainer_id_fk, int id) {
+        this.level = level;
+        this.poke_fk_id = poke_fk_id;
+        this.trainer_id_fk = trainer_id_fk;
+        TrainerDAO tDAO = new TrainerDAO();
+        PokeDexDAO pDAO = new PokeDexDAO();
+        pokedex = pDAO.getByID(poke_fk_id);
+        name = pDAO.getByID(poke_fk_id).getPoke_name();
+        trainer_name = tDAO.getTrainerByID(trainer_id_fk).getTrainer_name();
+        this.id = id;
+    }
+
+    public Owned_pokemon(int level, String name, String trainer_name) {
+        this.level = level;
+        this.name = name;
+        this.trainer_name = trainer_name;
+        PokeDexDAO pDAO = new PokeDexDAO();
+        poke_fk_id = pDAO.getByName(name).getPoke_no();
+        pokedex = pDAO.getByID(poke_fk_id);
+        TrainerDAO tDAO = new TrainerDAO();
+        trainer_id_fk = tDAO.getTrainerByName(trainer_name).getUser_id();
+
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

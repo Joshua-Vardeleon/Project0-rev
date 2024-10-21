@@ -22,7 +22,8 @@ public class TrainerDAO {
             ps.setString(2, trainer.getRegion());
 
             ps.executeUpdate();
-
+            TrainerDAO tDAO = new TrainerDAO();
+            trainer = tDAO.getTrainerByName(trainer.getTrainer_name());
             return trainer;
         } catch(SQLException e) {
             e.printStackTrace();
@@ -71,6 +72,23 @@ public class TrainerDAO {
         }
         return 0;
     }
+    public String changeRegionbyName(String region, String changeRegion){
+        try(Connection conn = ConnectionUtil.getConnection()) {
+            String sql = "UPDATE trainer SET  region = ? Where trainer_name = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, changeRegion);
+            ps.setString(2,region);
+
+            ps.executeUpdate();
+
+            return region;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("error in trying to update user's region");
+        }
+        return null;
+    }
     public Trainer getTrainerByName(String name) {
         try (Connection conn = ConnectionUtil.getConnection()) {
             String sql = "SELECT * FROM trainer WHERE trainer_name = ?";
@@ -114,6 +132,7 @@ public class TrainerDAO {
         }
         return null;
     }
+
     public ArrayList<Trainer> getTrainerByRegion(String region){
         try (Connection conn = ConnectionUtil.getConnection()) {
             String sql = "SELECT * FROM trainer WHERE region = ?";

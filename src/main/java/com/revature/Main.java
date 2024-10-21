@@ -5,8 +5,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.revature.controllers.LoginController;
 import com.revature.controllers.Owned_PokemonController;
 import com.revature.controllers.TrainerController;
+import com.revature.models.Login;
 import io.javalin.Javalin;
 import com.revature.DAO.Owned_PokemonDAO;
 import com.revature.DAO.PokeDexDAO;
@@ -52,6 +54,14 @@ public class Main {
 
         var app = Javalin.create().start(7000);
 
+
+        app.before("/trainers", ctx -> {
+            System.out.println("Inside Before Handler");
+            if(LoginController.ses == null){
+                System.out.println("Session is null!");
+                throw new IllegalArgumentException("login is needed");
+            }
+        });
         //Exception handler for the before handler, telling the user to log in if the session is null
         app.exception(IllegalArgumentException.class, (e, ctx) -> {
             ctx.status(401);
@@ -69,13 +79,22 @@ public class Main {
 
         TrainerController tc = new TrainerController();
         Owned_PokemonController oc = new Owned_PokemonController();
+        LoginController lc = new LoginController();
+
         app.get("/trainers/{userid}", tc.getbyIDHandler);
         app.get("/trainers", tc.getbyAllTrainersHandler);
         app.post("/trainers", tc.insertTrainersHandler);
-        app.patch("/trainers/{id}", tc.changeRegionHandler);
+        app.patch("/trainers", tc.changeRegionHandler);
+//        app.patch("/trainers/{id}", tc.changeRegionHandler);
         app.get("/owned", oc.getAllOwnedPokemonHandler);
         app.post("/owned", oc.insertByName);
-        app.get("/owned/catch", oc.catchRandom);
+        app.post("/owned/catch", oc.catchRandom);
+        app.delete("/owned", oc.releasePokemon);
+        app.get("/owned/search", oc.getOwnedbyName);
+
+        app.post("/auth", lc.loginHandler);
+        app.post("/battle", tc.battle);
+
 
     }
 }

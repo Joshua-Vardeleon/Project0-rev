@@ -1,5 +1,7 @@
 package com.revature.controllers;
 
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import com.revature.DAO.Owned_PokemonDAO;
 import com.revature.models.Trainer;
 import com.revature.DAO.TrainerDAO;
 import io.javalin.http.Handler;
@@ -59,12 +61,50 @@ public class TrainerController {
     };
 
     public Handler changeRegionHandler = ctx -> {
-        int user_id = Integer.parseInt(ctx.pathParam("id"));
-        String region = ctx.body();
-        tDAO.changeRegionbyID(user_id, region);
-        Trainer trainer =  tDAO.getTrainerByID(user_id);
-        trainer.setRoster();
-        ctx.json(trainer);
+
+        Trainer data = ctx.bodyAsClass(Trainer.class);
+
+        if(data.getUser_id() != 0) {
+            tDAO.changeRegionbyID(data.getUser_id(), data.getRegion());
+            Trainer trainer =  tDAO.getTrainerByID(data.getUser_id());
+            if(trainer != null) {
+                trainer.setRoster();
+                ctx.json(trainer);
+            } else {
+                ctx.result("User not found, Please Try again");
+                ctx.status(400);
+            }
+
+        } else if (!(data.getTrainer_name().isEmpty())) {
+            tDAO.changeRegionbyName(data.getTrainer_name(), data.getRegion());
+            Trainer trainer =  tDAO.getTrainerByName(data.getTrainer_name());
+            if(trainer != null) {
+                trainer.setRoster();
+                ctx.json(trainer);
+            }
+            else {
+                ctx.result("User not found, Please Try again");
+                ctx.status(400);
+            }
+
+        }
+
+
+    };
+    public Handler battle = ctx -> {
+
+
+        String data = ctx.body();
+        String[] battleInput = data.split(",");
+        int trainerid1;
+        int trainerid2;
+
+        trainerid1 =  Integer.parseInt(battleInput[0]);
+        trainerid2 = Integer.parseInt(battleInput[1]);
+
+        Owned_PokemonDAO pDAO = new Owned_PokemonDAO();
+        ctx.result(pDAO.battle(trainerid1,trainerid2));
+
     };
 
 }
